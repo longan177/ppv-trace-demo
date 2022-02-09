@@ -1,28 +1,46 @@
 import React, { useState } from "react";
 import { patient } from "./tempdata";
 import { useFirebase } from "./FirestoreContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCoffee } from "@fortawesome/free-solid-svg-icons";
+import { fs } from "./config/firebase";
 
 function Article() {
   const { patients } = useFirebase();
   const [patient, setpatient] = useState(null);
   const [input, setInput] = useState("");
   const [notFound, setnotFound] = useState(false);
+  const ref = fs.collection("patients");
+
+  const getPatient = () => {
+    const patientIC = input.replace(/(\d{6})(\d{2})(\d{4})/, "$1-$2-$3");
+    console.log(patientIC);
+    ref.where("ic", "==", patientIC).onSnapshot((querySnapshot) => {
+      const patient = querySnapshot.docs[0].data();
+      console.log(patient);
+      //   setpatient(patient);
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!input) {
-      return;
-    }
-    console.log(input);
-    const findPatientByIC = patients.find((p) => {
-      const identityCard = p.ic.replace(/-/g, "");
-      return identityCard === input;
-    });
-    if (!findPatientByIC) {
-      setnotFound(true);
-    }
-    setpatient(findPatientByIC);
-    // console.log(findPatientByIC);
+    if (!input) return;
+    getPatient();
+    // console.log("ok");
+    // if (!input) {
+    //   return;
+    // }
+    // console.log(input);
+    // const findPatientByIC = patients.find((p) => {
+    //   console.log(p.ic);
+    //   //   const identityCard = p.ic.replace(/-/g, "");
+    //   //   return identityCard === input;
+    // });
+    // if (!findPatientByIC) {
+    //   setnotFound(true);
+    // }
+    // setpatient(findPatientByIC);
+    // // console.log(findPatientByIC);
   };
   const handleChange = (value) => {
     setInput(value);

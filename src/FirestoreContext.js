@@ -8,16 +8,17 @@ export function useFirebase() {
 export function FirebaseProvider({ children }) {
   const [patients, setPatients] = useState([]);
   const getPatient = async () => {
-    const patients = await fs.collection("patients").get();
-    const patientsArray = [];
-    patients.docs.forEach((snap) => {
-      const data = snap.data();
+    // const patients = await fs.collection("patients").get();
+    // const patientsArray = [];
+    // patients.docs.forEach((snap) => {
+    //   const data = snap.data();
 
-      patientsArray.push({ ...data });
-      if (patientsArray.length === patients.docs.length) {
-        setPatients(patientsArray);
-      }
-    });
+    //   patientsArray.push({ ...data });
+    //   if (patientsArray.length === patients.docs.length) {
+    //     setPatients(patientsArray);
+    //   }
+    // });
+    console.log("hehe");
   };
 
   useEffect(() => {
