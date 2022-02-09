@@ -16,9 +16,14 @@ function Article() {
     const patientIC = input.replace(/(\d{6})(\d{2})(\d{4})/, "$1-$2-$3");
     console.log(patientIC);
     ref.where("ic", "==", patientIC).onSnapshot((querySnapshot) => {
-      const patient = querySnapshot.docs[0].data();
-      console.log(patient);
-      //   setpatient(patient);
+      if (querySnapshot.empty) {
+        setnotFound(true);
+        setpatient(null);
+        return;
+      }
+      const patient = querySnapshot?.docs[0].data();
+
+      setpatient(patient);
     });
   };
 
