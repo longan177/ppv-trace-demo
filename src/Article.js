@@ -1,14 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { patient } from "./tempdata";
 import { useFirebase } from "./FirestoreContext";
 
 function Article() {
-  const { test } = useFirebase();
+  const { patients } = useFirebase();
+  const [patient, setpatient] = useState(null);
+  const [input, setInput] = useState("");
+  const [notFound, setnotFound] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("hi");
+    if (!input) {
+      return;
+    }
+    console.log(input);
+    const findPatientByIC = patients.find((p) => {
+      const identityCard = p.ic.replace(/-/g, "");
+      return identityCard === input;
+    });
+    if (!findPatientByIC) {
+      setnotFound(true);
+    }
+    setpatient(findPatientByIC);
+    // console.log(findPatientByIC);
   };
+  const handleChange = (value) => {
+    setInput(value);
+    setnotFound(false);
+  };
+
   return (
     <article>
       <div className="article-container">
@@ -18,16 +38,20 @@ function Article() {
           </label>
           <div className="form-input">
             <input
+              className="input-ic"
+              value={input}
+              onChange={(e) => handleChange(e.target.value)}
               type="number"
               maxLength={30}
-              placeholder="Kad Pengenalan "
+              placeholder="Kad Pengenalan (tanpa -) "
             ></input>
             <button onClick={(e) => handleSubmit(e)} className="btn-submit">
               Semak
             </button>
           </div>
         </form>
-        <PatientDetail />
+        {patient && <PatientDetail patient={patient} />}
+        {notFound && "Patient not found!"}
       </div>
     </article>
   );
@@ -35,12 +59,12 @@ function Article() {
 
 export default Article;
 
-function PatientDetail() {
-  const { name, age, gender, dos, doa, dod } = patient;
+function PatientDetail(props) {
+  const { name, age, gender, dos, doa, dod } = props.patient;
   return (
     <div className="patient-detail-container">
       <div className="patient-detail">
-        <h3 className="patient-name">{name}</h3>
+        <h3 className="patient-name">{name ? name : "Not found"}</h3>
         <div className="p-info patient-age">
           Age: <span>{age}</span>
         </div>
