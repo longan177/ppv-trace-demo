@@ -183,3 +183,30 @@ nav {
     font-size: 1.3rem;
   }
 }
+
+.form-kkm {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.patient-detail-container {
+  margin-top: 2rem;
+  background-color: var(--clr-green-light);
+  max-width: 700px;
+  padding: 1rem 0.3rem;
+}
+.p-info {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-top: 0.5rem;
+}
+.patient-name {
+  text-align: center;
+}
+.p-info span {
+  font-weight: 600;
+  text-transform: capitalize;
+  display: inline-block;
+  margin-left: 0.2rem;
+}
