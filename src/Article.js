@@ -10,11 +10,11 @@ function Article() {
   const [patient, setpatient] = useState(null);
   const [input, setInput] = useState("");
   const [notFound, setnotFound] = useState(false);
-  const ref = fs.collection("patients");
+  const ref = fs.collection("patientdemo");
 
   const getPatient = () => {
     const patientIC = input.replace(/(\d{6})(\d{2})(\d{4})/, "$1-$2-$3");
-    console.log(patientIC);
+
     ref.where("ic", "==", patientIC).onSnapshot((querySnapshot) => {
       if (querySnapshot.empty) {
         setnotFound(true);
@@ -22,6 +22,7 @@ function Article() {
         return;
       }
       const patient = querySnapshot?.docs[0].data();
+      // console.log(querySnapshot.docs);
 
       setpatient(patient);
     });
@@ -32,21 +33,6 @@ function Article() {
 
     if (!input) return;
     getPatient();
-    // console.log("ok");
-    // if (!input) {
-    //   return;
-    // }
-    // console.log(input);
-    // const findPatientByIC = patients.find((p) => {
-    //   console.log(p.ic);
-    //   //   const identityCard = p.ic.replace(/-/g, "");
-    //   //   return identityCard === input;
-    // });
-    // if (!findPatientByIC) {
-    //   setnotFound(true);
-    // }
-    // setpatient(findPatientByIC);
-    // // console.log(findPatientByIC);
   };
   const handleChange = (value) => {
     setInput(value);
@@ -66,7 +52,7 @@ function Article() {
               className="input-ic"
               value={input}
               onChange={(e) => handleChange(e.target.value)}
-              type="number"
+              type="text"
               maxLength={30}
               placeholder="Kad Pengenalan (tanpa -) "
             ></input>
