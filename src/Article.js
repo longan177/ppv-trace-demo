@@ -29,6 +29,7 @@ function Article() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!input) return;
     getPatient();
     // console.log("ok");
@@ -59,6 +60,7 @@ function Article() {
           <label>
             Please key in your IC number to check your quarantine status
           </label>
+
           <div className="form-input">
             <input
               className="input-ic"
